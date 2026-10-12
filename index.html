@@ -1,0 +1,496 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#08060c">
+<meta name="description" content="Hype Film: vídeos automotivos, comerciais e filmes autorais com cara de cinema. Orçamento pelo WhatsApp.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Hype Film">
+<meta property="og:description" content="Vídeo com cara de cinema pro teu carro, tua marca e teu negócio.">
+<meta property="og:image" content="media/destaque-paulo-cypriano.jpg">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%2308060c'/%3E%3Ctext x='32' y='45' font-family='Impact,Arial Narrow,sans-serif' font-size='40' text-anchor='middle' fill='%23fff'%3EH%3C/text%3E%3C/svg%3E">
+<title>Hype Film</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Archivo:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: a rolagem é a timeline de edição — hero com o "líquido" do avatar, filme 16:9 que cresce até tela cheia, rolo de verticais que corre de lado, processo e chamada final. */
+:root{
+  --ink:#08060c;          /* preto com viés roxo */
+  --panel:#130d1c;
+  --fg:#f6f0fb;
+  --mut:#a597b8;
+  --line:#2a2036;
+  --magenta:#e65ff6;
+  --violet:#6d36ee;
+  --deep:#2b1050;
+  --display:"Bebas Neue",Impact,"Arial Narrow",sans-serif;
+  --body:"Archivo",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --mono:"JetBrains Mono",ui-monospace,"SF Mono",Menlo,monospace;
+  --gut:clamp(16px,4.2vw,64px);
+  --top:env(safe-area-inset-top,0px);
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+html{background:var(--ink)}
+body{background:var(--ink);color:var(--fg);font-family:var(--body);font-size:16px;line-height:1.55;margin:0;overflow-x:clip;-webkit-font-smoothing:antialiased}
+a{color:inherit}
+:focus-visible{outline:2px solid var(--magenta);outline-offset:3px}
+.wrap{padding-inline:var(--gut)}
+.mono{font-family:var(--mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase}
+
+/* brilho de neon, igual ao avatar */
+.glow{color:#fff;text-shadow:0 0 4px rgba(255,255,255,.9),0 0 16px rgba(255,255,255,.55),0 0 38px var(--magenta),0 0 90px var(--violet)}
+
+/* grão de película */
+.grain{position:fixed;inset:-50%;pointer-events:none;z-index:60;opacity:.07;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  animation:grain 1s steps(6) infinite}
+@keyframes grain{0%{transform:translate(0,0)}20%{transform:translate(-3%,2%)}40%{transform:translate(2%,-3%)}60%{transform:translate(-2%,-1%)}80%{transform:translate(3%,3%)}100%{transform:translate(0,0)}}
+
+/* NAV */
+.nav{position:fixed;left:0;right:0;top:0;z-index:50;padding:calc(var(--top) + 14px) var(--gut) 14px;display:flex;align-items:center;gap:24px;
+  background:linear-gradient(180deg,rgba(8,6,12,.85),rgba(8,6,12,0))}
+.nav .brand{font-family:var(--display);font-size:26px;letter-spacing:.04em;text-decoration:none;line-height:1}
+.nav nav{display:flex;gap:22px;margin-left:auto}
+.nav nav a{font-size:14px;text-decoration:none;color:var(--mut);transition:color .2s}
+.nav nav a:hover{color:var(--fg)}
+.tc{display:flex;align-items:center;gap:8px;font-family:var(--mono);font-size:12px;letter-spacing:.06em;color:var(--fg);font-variant-numeric:tabular-nums;
+  border:1px solid var(--line);padding:6px 10px;border-radius:4px;background:rgba(19,13,28,.7)}
+.tc i{width:8px;height:8px;border-radius:50%;background:#ff3b5c;box-shadow:0 0 10px #ff3b5c;animation:rec 1.2s steps(2) infinite}
+@keyframes rec{50%{opacity:.25}}
+
+/* HERO */
+.hero{position:relative;overflow:hidden;padding-block:calc(var(--top) + 130px) 90px;isolation:isolate}
+.blobs{position:absolute;inset:0;z-index:-1;filter:blur(46px) saturate(1.15)}
+.blob{position:absolute;border-radius:50%;will-change:transform}
+.b1{width:62vmax;height:42vmax;right:-14vmax;top:-12vmax;background:radial-gradient(closest-side,var(--magenta),rgba(230,95,246,.35) 60%,transparent);animation:drift1 16s ease-in-out infinite alternate}
+.b2{width:46vmax;height:46vmax;left:-16vmax;bottom:-22vmax;background:radial-gradient(closest-side,var(--violet),rgba(109,54,238,.3) 62%,transparent);animation:drift2 19s ease-in-out infinite alternate}
+.b3{width:30vmax;height:22vmax;left:32%;top:38%;background:radial-gradient(closest-side,#c44be8,transparent);opacity:.75;animation:drift3 13s ease-in-out infinite alternate}
+@keyframes drift1{to{transform:translate(-8vmax,6vmax) rotate(18deg) scale(1.08)}}
+@keyframes drift2{to{transform:translate(10vmax,-6vmax) rotate(-14deg)}}
+@keyframes drift3{to{transform:translate(-12vmax,-4vmax) scale(1.25)}}
+.hero::after{content:"";position:absolute;inset:auto 0 0 0;height:40%;background:linear-gradient(0deg,var(--ink),transparent);z-index:-1}
+.hero-grid{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(0,1fr);gap:40px;align-items:end}
+.eyebrow{display:flex;align-items:center;gap:10px;color:var(--fg);opacity:.85}
+.eyebrow::before{content:"";width:28px;height:1px;background:var(--magenta)}
+h1{font-family:var(--display);font-weight:400;font-size:clamp(128px,26vw,420px);line-height:.8;letter-spacing:.01em;margin:22px 0 0}
+h1 .ln{display:block;white-space:nowrap}
+.w{display:inline-block;white-space:nowrap}
+h1 .ch{display:inline-block;animation:chIn .9s cubic-bezier(.2,.8,.2,1) both;animation-delay:calc(var(--i) * 60ms)}
+@keyframes chIn{from{opacity:0;transform:translateY(.25em);filter:blur(12px)}}
+.lede{font-size:clamp(17px,1.6vw,21px);max-width:34ch;color:var(--fg);margin:0 0 26px;text-wrap:pretty}
+.ctas{display:flex;flex-wrap:wrap;gap:12px}
+.btn{display:inline-flex;align-items:center;gap:10px;padding:14px 22px;border-radius:999px;font-weight:600;font-size:15px;text-decoration:none;transition:transform .2s,box-shadow .2s,background .2s}
+.btn.pri{background:var(--fg);color:var(--ink);box-shadow:0 0 0 rgba(230,95,246,0)}
+.btn.pri:hover{transform:translateY(-2px);box-shadow:0 8px 40px rgba(230,95,246,.55)}
+.btn.sec{border:1px solid rgba(246,240,251,.35);color:var(--fg)}
+.btn.sec:hover{border-color:var(--fg);background:rgba(246,240,251,.06)}
+.slate{margin-top:34px;border:1px solid var(--line);background:rgba(8,6,12,.55);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border-radius:6px;overflow:hidden;max-width:420px}
+.slate .bars{height:16px;background:repeating-linear-gradient(-45deg,var(--fg) 0 14px,var(--ink) 14px 28px);opacity:.9}
+.slate dl{display:grid;grid-template-columns:auto 1fr;gap:6px 18px;margin:0;padding:16px 18px}
+.slate dt{color:var(--mut)}
+.slate dd{margin:0;color:var(--fg)}
+
+/* FAIXA */
+.band{border-block:1px solid var(--line);overflow:hidden;padding-block:18px;background:var(--panel)}
+.band-track{display:flex;gap:40px;white-space:nowrap;width:max-content;will-change:transform}
+.band-track span{font-family:var(--display);font-size:clamp(34px,5vw,64px);line-height:1;letter-spacing:.03em}
+.band-track span.o{color:transparent;-webkit-text-stroke:1px rgba(246,240,251,.55)}
+.band-track b{color:var(--magenta);font-weight:400;font-family:var(--display);font-size:clamp(34px,5vw,64px);line-height:1}
+
+/* DESTAQUE 16:9 */
+.feat{position:relative;height:240vh}
+.feat-pin{position:sticky;top:var(--top);height:calc(100svh - var(--top));overflow:hidden;display:grid;place-items:center}
+.feat-word{position:absolute;top:50%;left:0;transform:translate(var(--wx,0),-50%);font-family:var(--display);font-size:clamp(120px,22vw,340px);line-height:.8;white-space:nowrap;color:transparent;-webkit-text-stroke:1px rgba(230,95,246,.35);pointer-events:none;will-change:transform}
+.feat-frame{position:relative;width:min(100vw,calc((100svh - var(--top)) * 16 / 9));aspect-ratio:16/9;max-width:100%;transform:scale(var(--s,.62));border-radius:calc(22px / var(--s,.62));overflow:hidden;background:#000;
+  box-shadow:0 30px 120px rgba(109,54,238,.45),0 0 0 1px rgba(246,240,251,.12);will-change:transform}
+.feat-frame video{width:100%;height:100%;object-fit:cover;display:block}
+.feat-meta{position:absolute;left:0;right:0;bottom:0;z-index:2;padding:clamp(14px,3vw,36px) var(--gut) clamp(22px,4vw,44px);display:flex;align-items:flex-end;justify-content:space-between;gap:20px;
+  background:linear-gradient(0deg,rgba(8,6,12,.85),rgba(8,6,12,0));opacity:var(--m,0);transform:translateY(calc((1 - var(--m,0)) * 20px))}
+.feat-meta h2{font-family:var(--display);font-weight:400;font-size:clamp(34px,6vw,92px);line-height:.85;margin:6px 0 0}
+.feat-meta p{margin:10px 0 0;max-width:46ch;color:var(--fg);font-size:clamp(13px,1.3vw,16px)}
+.feat-tag{color:var(--magenta)}
+.sound{flex:none;display:inline-flex;align-items:center;gap:8px;border:1px solid rgba(246,240,251,.4);background:rgba(8,6,12,.5);color:var(--fg);border-radius:999px;padding:10px 16px;font:600 13px var(--body);cursor:pointer;backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px)}
+.sound:hover{border-color:var(--fg)}
+.sound svg{width:16px;height:16px}
+.feat-corner{position:absolute;top:clamp(10px,2vw,22px);left:clamp(10px,2vw,22px);right:clamp(10px,2vw,22px);display:flex;justify-content:space-between;color:var(--fg);opacity:.85;pointer-events:none}
+
+/* ROLO DE VERTICAIS */
+.reel{position:relative}
+.reel-pin{position:sticky;top:var(--top);height:calc(100svh - var(--top));overflow:hidden;display:flex;flex-direction:column;justify-content:center;gap:clamp(16px,2.6vh,30px);padding-top:64px}
+.reel-head{display:flex;align-items:flex-end;justify-content:space-between;gap:20px;flex-wrap:wrap}
+.reel-head h2{font-family:var(--display);font-weight:400;font-size:clamp(56px,9vw,132px);line-height:.82;margin:0}
+.reel-head h2 span{color:var(--magenta)}
+.reel-head p{margin:0;color:var(--mut);max-width:34ch}
+.count{font-family:var(--mono);font-size:13px;color:var(--fg);font-variant-numeric:tabular-nums}
+.count b{color:var(--magenta);font-weight:500}
+.track{display:flex;gap:clamp(16px,2.4vw,34px);padding-inline:var(--gut);width:max-content;will-change:transform}
+.clip{flex:none;width:calc(var(--ch) * 9 / 16 + 0px);display:flex;flex-direction:column;gap:14px;transform:perspective(900px) rotateY(var(--ry,0deg)) scale(var(--cs,1));transition:filter .3s;filter:saturate(var(--sat,1)) brightness(var(--br,1))}
+.reel{--ch:min(52svh,540px)}
+.phone{position:relative;height:var(--ch);aspect-ratio:9/16;border-radius:18px;overflow:hidden;background:var(--panel);box-shadow:0 0 0 1px rgba(246,240,251,.1),0 24px 70px rgba(0,0,0,.6)}
+.clip.on .phone{box-shadow:0 0 0 1px rgba(230,95,246,.7),0 0 60px rgba(230,95,246,.35),0 24px 70px rgba(0,0,0,.6)}
+.phone video{width:100%;height:100%;object-fit:cover;display:block}
+.phone .dur{position:absolute;top:10px;right:10px;font-family:var(--mono);font-size:11px;padding:4px 7px;border-radius:4px;background:rgba(8,6,12,.7);font-variant-numeric:tabular-nums}
+.clip .cat{color:var(--magenta)}
+.clip h3{font-family:var(--display);font-weight:400;font-size:30px;line-height:.9;margin:4px 0 0;letter-spacing:.02em}
+.clip p{margin:6px 0 0;font-size:14px;color:var(--mut);line-height:1.45}
+.reel-bar{height:2px;background:var(--line);position:relative;overflow:hidden}
+.reel-bar i{position:absolute;inset:0;transform-origin:left;transform:scaleX(var(--rp,0));background:linear-gradient(90deg,var(--violet),var(--magenta))}
+
+/* PROCESSO */
+.proc{padding-block:clamp(90px,14vw,180px) clamp(60px,9vw,120px)}
+.proc-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.3fr);gap:clamp(30px,6vw,90px)}
+.proc h2{font-family:var(--display);font-weight:400;font-size:clamp(56px,8vw,120px);line-height:.85;margin:14px 0 0;position:sticky;top:calc(var(--top) + 110px)}
+.proc h2 span{color:var(--magenta)}
+.steps{position:relative;list-style:none;margin:0;padding:0 0 0 34px;display:grid;gap:clamp(40px,7vw,80px)}
+.steps::before{content:"";position:absolute;left:5px;top:6px;bottom:6px;width:1px;background:var(--line)}
+.steps::after{content:"";position:absolute;left:5px;top:6px;width:1px;height:calc((100% - 12px) * var(--sp,0));background:linear-gradient(var(--violet),var(--magenta));box-shadow:0 0 12px var(--magenta)}
+.step{position:relative;opacity:calc(.35 + .65 * var(--lit,1))}
+.step::before{content:"";position:absolute;left:-34px;top:8px;width:11px;height:11px;border-radius:50%;background:var(--ink);border:1px solid var(--mut);transition:background .3s,border-color .3s,box-shadow .3s}
+.step.lit::before{background:var(--magenta);border-color:var(--magenta);box-shadow:0 0 14px var(--magenta)}
+.step .mono{color:var(--mut)}
+.step h3{font-family:var(--display);font-weight:400;font-size:clamp(36px,4.6vw,60px);line-height:.9;margin:6px 0 10px}
+.step p{margin:0;max-width:44ch;color:var(--fg);opacity:.85}
+
+/* CONTATO */
+.cta{position:relative;overflow:hidden;padding-block:clamp(80px,12vw,170px);isolation:isolate;border-top:1px solid var(--line)}
+.cta .blobs{opacity:.75}
+.cta h2{font-family:var(--display);font-weight:400;font-size:clamp(84px,17vw,280px);line-height:.8;margin:18px 0 28px}
+.cta h2 .ch{display:inline-block;color:rgba(246,240,251,.14);transition:color .35s,text-shadow .35s}
+.cta h2 .ch.lit{color:#fff;text-shadow:0 0 4px rgba(255,255,255,.9),0 0 16px rgba(255,255,255,.5),0 0 38px var(--magenta),0 0 90px var(--violet)}
+.cta-row{display:flex;flex-wrap:wrap;gap:28px 60px;align-items:flex-end;justify-content:space-between}
+.cta p{margin:0;max-width:40ch;font-size:clamp(17px,1.6vw,21px)}
+.cta .how{color:var(--mut);font-size:15px;margin-top:10px}
+.cta .how .num{color:var(--fg);font-family:var(--mono);font-size:14px;user-select:all;-webkit-user-select:all}
+footer a{text-decoration:none}
+footer a:hover{color:var(--fg)}
+
+footer{border-top:1px solid var(--line);padding-block:26px;display:flex;flex-wrap:wrap;gap:12px 30px;justify-content:space-between;color:var(--mut)}
+footer .brand{font-family:var(--display);font-size:22px;color:var(--fg);letter-spacing:.04em}
+
+/* revelação ligada ao scroll (posição, não gatilho) */
+[data-rv]{transform:translateY(calc((1 - var(--r,1)) * 40px));opacity:var(--r,1)}
+
+@media (max-width:860px){
+  .nav nav{display:none}
+  .tc{margin-left:auto}
+  .hero{padding-block:calc(var(--top) + 104px) 60px}
+  .hero-grid{grid-template-columns:minmax(0,1fr);gap:8px}
+  .slate{max-width:none}
+  .reel{--ch:min(48svh,440px)}
+  .feat-corner{display:none}
+  .feat-meta{background:none}
+  .clip h3{font-size:26px}
+  .proc-grid{grid-template-columns:minmax(0,1fr)}
+  .proc h2{position:static}
+  .feat-meta{flex-direction:column;align-items:flex-start;gap:12px}
+  .feat-meta p{display:none}
+}
+@media (prefers-reduced-motion:reduce){
+  .grain,.blob,.tc i,h1 .ch{animation:none}
+  .feat{height:auto}
+  .feat-pin{position:static;height:auto;padding-block:40px}
+  .feat-frame{transform:none;border-radius:0}
+  .feat-pin{--m:1}
+  .feat-meta{position:static}
+  .feat-word{display:none}
+  .reel{height:auto!important}
+  .reel-pin{position:static;height:auto;padding-block:60px}
+  .track{width:auto;overflow-x:auto;transform:none!important}
+  .clip{transform:none}
+}
+</style>
+
+</head>
+<body>
+<div class="grain" aria-hidden="true"></div>
+
+<header class="nav">
+  <a class="brand glow" href="#topo">HYPE FILM</a>
+  <nav aria-label="Seções">
+    <a href="#destaque">Destaque</a>
+    <a href="#trabalhos">Trabalhos</a>
+    <a href="#processo">Processo</a>
+    <a href="#contato">Contato</a>
+  </nav>
+  <div class="tc" title="A rolagem da página é a timeline"><i></i><span id="tc">00:00:00:00</span></div>
+</header>
+
+<main id="topo">
+  <section class="hero">
+    <div class="blobs" aria-hidden="true"><div class="blob b1"></div><div class="blob b2"></div><div class="blob b3"></div></div>
+    <div class="wrap hero-grid">
+      <div>
+        <div class="eyebrow mono">Produtora audiovisual</div>
+        <h1 class="glow" aria-label="Hype Film"><span class="ln" data-split>HYPE</span><span class="ln" data-split>FILM</span></h1>
+      </div>
+      <div>
+        <p class="lede">Vídeo com cara de cinema pro teu carro, tua marca e teu negócio. A gente pensa, grava, edita e entrega pronto pra postar.</p>
+        <div class="ctas">
+          <a class="btn pri" href="#trabalhos">Ver trabalhos</a>
+          <a class="btn sec" href="https://contate.me/559184009159" target="_blank" rel="noopener">Pedir orçamento no WhatsApp</a>
+        </div>
+        <div class="slate mono" aria-label="Ficha técnica">
+          <div class="bars"></div>
+          <dl>
+            <dt>Prod.</dt><dd>Hype Film</dd>
+            <dt>Rolo</dt><dd>01 · 8 filmes</dd>
+            <dt>Formatos</dt><dd>9:16 · 16:9</dd>
+            <dt>Equipe</dt><dd>Câmera · Drone · Edição · Motion</dd>
+          </dl>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="band" aria-hidden="true">
+    <div class="band-track" id="band"></div>
+  </div>
+
+  <section class="feat" id="destaque" aria-label="Filme em destaque">
+    <div class="feat-pin" id="featPin">
+      <div class="feat-word" id="featWord" aria-hidden="true">EM DESTAQUE · EM DESTAQUE ·</div>
+      <div class="feat-frame" id="featFrame">
+        <video id="featVid" src="media/destaque-paulo-cypriano.mp4" poster="media/destaque-paulo-cypriano.jpg" muted loop playsinline autoplay preload="metadata"></video>
+        <div class="feat-corner mono" aria-hidden="true"><span>16:9 · 00:32</span><span>Filme autoral</span></div>
+      </div>
+      <div class="feat-meta">
+        <div>
+          <span class="mono feat-tag">Em destaque</span>
+          <h2>Paulo Cypriano Tattoo</h2>
+          <p>Mangue, fim de tarde e preto e branco com textura de película. Um filme de marca pro tatuador, no ritmo lento do material dele.</p>
+        </div>
+        <button class="sound" id="soundBtn" type="button" aria-pressed="false">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H3v6h3l5 4z"/><path id="waves" d="M16 9a4 4 0 0 1 0 6M19 6a8 8 0 0 1 0 12" opacity=".35"/></svg>
+          <span>Ligar som</span>
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <section class="reel" id="trabalhos" aria-label="Trabalhos">
+    <div class="reel-pin">
+      <div class="wrap reel-head">
+        <h2>TRABA<span>LHOS</span></h2>
+        <div style="display:grid;gap:10px;justify-items:end">
+          <p>Vídeos verticais feitos pra Reels e status. Role a página pra passar o rolo.</p>
+          <span class="count" id="count"><b>01</b> / 07</span>
+        </div>
+      </div>
+      <div class="track" id="track"></div>
+      <div class="wrap"><div class="reel-bar"><i id="reelBar"></i></div></div>
+    </div>
+  </section>
+
+  <section class="proc wrap" id="processo">
+    <div class="proc-grid">
+      <div>
+        <div class="eyebrow mono">Como a gente trabalha</div>
+        <h2>DO ROTEIRO<br>À <span>ENTREGA</span></h2>
+      </div>
+      <ol class="steps" id="steps">
+        <li class="step"><span class="mono">Etapa 01</span><h3>Roteiro</h3><p>A gente entende o que tu quer vender e desenha as cenas antes de ligar a câmera.</p></li>
+        <li class="step"><span class="mono">Etapa 02</span><h3>Captação</h3><p>Gravação estabilizada, luz pensada pra cada cena e drone quando o plano pede altura.</p></li>
+        <li class="step"><span class="mono">Etapa 03</span><h3>Edição e cor</h3><p>Corte no ritmo da música, correção de cor e motion pra tua marca aparecer do jeito certo.</p></li>
+        <li class="step"><span class="mono">Etapa 04</span><h3>Entrega</h3><p>Arquivo pronto pra Reels, feed e status, no formato e na proporção de cada um.</p></li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="cta" id="contato">
+    <div class="blobs" aria-hidden="true"><div class="blob b1"></div><div class="blob b2"></div></div>
+    <div class="wrap">
+      <div class="eyebrow mono">Contato</div>
+      <h2 aria-label="Bora gravar?" id="ctaTitle"><span data-split>BORA GRAVAR?</span></h2>
+      <div class="cta-row">
+        <div>
+          <p>Carro, loja, restaurante ou evento: manda a ideia que a gente monta o roteiro.</p>
+          <p class="how">WhatsApp: <span class="num">(91) 98400-9159</span></p>
+        </div>
+        <a class="btn pri" href="https://contate.me/559184009159" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 11.5a8.4 8.4 0 0 1-12.4 7.4L3 21l2.1-5.4A8.4 8.4 0 1 1 21 11.5z"/></svg>
+          Chamar no WhatsApp
+        </a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="wrap">
+  <span class="brand">HYPE FILM</span>
+  <span class="mono">Câmera · Drone · Edição · Motion</span>
+  <a class="mono" href="https://contate.me/559184009159" target="_blank" rel="noopener">WhatsApp (91) 98400-9159</a>
+  <span class="mono">© 2026</span>
+</footer>
+
+<script>
+(() => {
+  const RM = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const $ = s => document.querySelector(s);
+  const clamp = (v, a = 0, b = 1) => Math.min(b, Math.max(a, v));
+  const ease = t => 1 - Math.pow(1 - t, 3);
+
+  /* letras separadas (título e chamada final) */
+  let n = 0;
+  document.querySelectorAll('[data-split]').forEach(el => {
+    const parts = el.textContent.split(' '); el.textContent = '';
+    parts.forEach((word, wi) => {
+      const w = document.createElement('span'); w.className = 'w'; w.setAttribute('aria-hidden', 'true');
+      for (const c of word) {
+        const s = document.createElement('span');
+        s.className = 'ch'; s.style.setProperty('--i', n++); s.textContent = c; w.appendChild(s);
+      }
+      el.appendChild(w);
+      if (wi < parts.length - 1) el.appendChild(document.createTextNode(' '));
+    });
+  });
+
+  /* faixa de serviços */
+  const words = ['Automotivo', 'Comercial', 'Gastronomia', 'Eventos', 'Filme autoral', 'Drone', 'Motion'];
+  const band = $('#band');
+  let html = '';
+  for (let k = 0; k < 4; k++) words.forEach((w, i) => { html += `<span class="${(i + k) % 2 ? 'o' : ''}">${w.toUpperCase()}</span><b>✦</b>`; });
+  band.innerHTML = html;
+
+  /* rolo de trabalhos */
+  const clips = [
+    { f: 'lancer-neon', cat: 'Automotivo', t: 'Lancer Evo X', d: '00:17', p: 'Neon roxo na avenida e câmera rente ao asfalto.' },
+    { f: 'fiesta-noturno', cat: 'Automotivo', t: 'Ford Fiesta', d: '00:58', p: 'Rolling shot de noite, com o âmbar dos faróis guiando a cor.' },
+    { f: 'supremma-pizza', cat: 'Comercial · Gastronomia', t: 'Supremma Pizza', d: '00:43', p: 'O dono apresenta e a câmera acompanha a pizza do molho ao forno.' },
+    { f: 'encontro-automotivo', cat: 'Evento', t: 'Encontro automotivo', d: '00:28', p: 'Motos, rodas e a galera, editado no ritmo do grave.' },
+    { f: 'maximus-acai', cat: 'Comercial · Gastronomia', t: 'Máximus Açaí', d: '00:32', p: 'Açaí batido na hora e o cardápio de promoção fechando o vídeo.' },
+    { f: 'ms-car', cat: 'Comercial · Estética automotiva', t: 'MS Car', d: '00:20', p: 'Higienização interna mostrada detalhe por detalhe.' },
+    { f: 'lancer-rotacao', cat: 'Automotivo', t: 'Lancer em rotação', d: '00:18', p: 'A câmera gira 90 graus e o carro segue no centro do quadro.' }
+  ];
+  const track = $('#track');
+  track.innerHTML = clips.map(c => `
+    <article class="clip">
+      <div class="phone"><video src="media/${c.f}.mp4" poster="media/${c.f}.jpg" muted loop playsinline preload="none"></video><span class="dur">${c.d}</span></div>
+      <div><span class="mono cat">${c.cat}</span><h3>${c.t}</h3><p>${c.p}</p></div>
+    </article>`).join('');
+  const clipEls = [...track.children];
+  const vids = clipEls.map(c => c.querySelector('video'));
+
+  /* refs */
+  const feat = $('#destaque'), pin = $('#featPin'), frame = $('#featFrame'), word = $('#featWord'), fvid = $('#featVid');
+  const reel = $('#trabalhos'), bar = $('#reelBar'), count = $('#count');
+  const steps = $('#steps'), stepEls = [...steps.querySelectorAll('.step')];
+  const ctaChars = [...document.querySelectorAll('#ctaTitle .ch')], cta = $('#contato');
+  const rv = [...document.querySelectorAll('.lede, .ctas, .slate, .reel-head, .proc .eyebrow, .cta-row')];
+  rv.forEach(e => e.setAttribute('data-rv', ''));
+  const tcEl = $('#tc');
+  const RUNTIME = 246; // soma dos 8 filmes, em segundos
+
+  let trackW = 0, active = -1;
+  function size() {
+    trackW = track.scrollWidth;
+    const extra = Math.max(0, trackW - innerWidth);
+    if (!RM) reel.style.height = `calc(100svh + ${extra}px)`;
+  }
+
+  /* som do destaque */
+  const sb = $('#soundBtn');
+  sb.addEventListener('click', () => {
+    fvid.muted = !fvid.muted;
+    if (!fvid.muted) fvid.play().catch(() => {});
+    sb.setAttribute('aria-pressed', String(!fvid.muted));
+    sb.querySelector('span').textContent = fvid.muted ? 'Ligar som' : 'Desligar som';
+    sb.querySelector('#waves').setAttribute('opacity', fvid.muted ? '.35' : '1');
+  });
+
+  function playOnly(i) {
+    if (i === active) return; active = i;
+    vids.forEach((v, k) => {
+      clipEls[k].classList.toggle('on', k === i);
+      if (k === i) { v.preload = 'auto'; v.play().catch(() => {}); } else v.pause();
+    });
+    count.innerHTML = `<b>${String(i + 1).padStart(2, '0')}</b> / ${String(clips.length).padStart(2, '0')}`;
+  }
+
+  let bandX = 0, lastY = scrollY, vel = 0;
+  function frameTick() {
+    const vh = innerHeight, y = scrollY;
+
+    /* timecode da página */
+    const doc = document.documentElement.scrollHeight - vh;
+    const secs = clamp(y / Math.max(1, doc)) * RUNTIME;
+    const ff = Math.floor((secs % 1) * 24), ss = Math.floor(secs) % 60, mm = Math.floor(secs / 60);
+    tcEl.textContent = `00:${String(mm).padStart(2, '0')}:${String(ss).padStart(2, '0')}:${String(ff).padStart(2, '0')}`;
+
+    /* revelações */
+    rv.forEach(e => { const r = e.getBoundingClientRect(); e.style.setProperty('--r', RM ? 1 : ease(clamp((vh - r.top) / (vh * .28)))); });
+
+    /* faixa: anda sozinha e acelera com a rolagem */
+    vel = vel * .9 + (y - lastY) * .1; lastY = y;
+    if (!RM) {
+      bandX -= .6 + Math.abs(vel) * .35;
+      const half = band.scrollWidth / 2;
+      if (-bandX > half) bandX += half;
+      band.style.transform = `translateX(${bandX}px)`;
+    }
+
+    if (!RM) {
+      /* destaque: cresce até a tela cheia */
+      const fr = feat.getBoundingClientRect();
+      const fp = clamp(-fr.top / (fr.height - vh));
+      const start = innerWidth < 860 ? .8 : .58;
+      const s = start + (1 - start) * ease(clamp(fp / .55));
+      frame.style.setProperty('--s', s.toFixed(4));
+      pin.style.setProperty('--m', clamp((fp - .45) / .25).toFixed(3));
+      word.style.setProperty('--wx', `${(-fp * 45).toFixed(2)}%`);
+
+      /* rolo horizontal */
+      const rr = reel.getBoundingClientRect();
+      const rp = clamp(-rr.top / Math.max(1, rr.height - vh));
+      const shift = Math.max(0, trackW - innerWidth);
+      track.style.transform = `translateX(${(-rp * shift).toFixed(1)}px)`;
+      bar.style.setProperty('--rp', rp.toFixed(4));
+      const cx = innerWidth / 2; let best = 0, bd = 1e9;
+      clipEls.forEach((c, i) => {
+        const b = c.getBoundingClientRect(); const d = (b.left + b.width / 2 - cx) / innerWidth;
+        c.style.setProperty('--ry', `${(d * -22).toFixed(2)}deg`);
+        c.style.setProperty('--cs', (1 - Math.min(Math.abs(d), .6) * .18).toFixed(3));
+        c.style.setProperty('--br', (1 - Math.min(Math.abs(d), .7) * .5).toFixed(3));
+        if (Math.abs(d) < bd) { bd = Math.abs(d); best = i; }
+      });
+      const inReel = rr.top < vh * .6 && rr.bottom > vh * .4;
+      if (inReel) playOnly(best); else if (active !== -1) { vids.forEach(v => v.pause()); clipEls.forEach(c => c.classList.remove('on')); active = -1; }
+    }
+
+    /* processo: linha que desce e acende as etapas */
+    const sr = steps.getBoundingClientRect();
+    const sp = clamp((vh * .6 - sr.top) / sr.height);
+    steps.style.setProperty('--sp', RM ? 1 : sp.toFixed(4));
+    stepEls.forEach(st => {
+      const t = st.getBoundingClientRect().top;
+      const lit = RM || t < vh * .6;
+      st.classList.toggle('lit', lit);
+      st.style.setProperty('--lit', lit ? 1 : 0);
+    });
+
+    /* chamada final acende letra por letra */
+    const cr = cta.getBoundingClientRect();
+    const cp = RM ? 1 : clamp((vh - cr.top) / (vh * .7));
+    const on = Math.round(cp * ctaChars.length);
+    ctaChars.forEach((c, i) => c.classList.toggle('lit', i < on));
+
+    /* destaque só toca quando aparece */
+    const fr2 = feat.getBoundingClientRect();
+    const fvis = fr2.top < vh && fr2.bottom > 0;
+    if (fvis && fvid.paused) fvid.play().catch(() => {}); else if (!fvis && !fvid.paused) fvid.pause();
+
+    requestAnimationFrame(frameTick);
+  }
+
+  addEventListener('resize', size);
+  addEventListener('load', size);
+  size();
+  if (RM) { vids.forEach(v => { v.preload = 'metadata'; v.controls = true; }); }
+  frameTick();
+})();
+</script>
+
+</body>
+</html>
